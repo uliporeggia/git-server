@@ -1,0 +1,12 @@
+services:
+  git-server:
+    build: .
+    volumes:
+      - ./repositories:/r
+    ports:
+      - "2222:22"
+    networks:
+      - host
+
+networks:
+  host:
