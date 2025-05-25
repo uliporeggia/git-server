@@ -21,7 +21,9 @@ FROM openssh-server AS git-server
 RUN apt-get update && \
     apt-get install -y git
 
-RUN adduser --disabled-password --gecos "" git
+RUN adduser --disabled-password --gecos "" git && \
+    echo "$(which git-shell)" >> /etc/shells && \
+    chsh git -s $(which git-shell) 
 
 RUN mkdir /home/git/.ssh && \
     chown -R git:git /home/git/.ssh && \

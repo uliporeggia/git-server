@@ -7,7 +7,7 @@ for file in "$home"/public-keys/*; do
         # Verifica se o conteúdo do arquivo já está em authorized_keys
         if ! grep -q -F -x -f "$file" "$home"/.ssh/authorized_keys; then
             echo "Adicionado nova chave pública: $file"
-            cat "$file" >> "$home"/.ssh/authorized_keys
+            echo "no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat $file)" >> "$home"/.ssh/authorized_keys
         fi
     fi
 done
