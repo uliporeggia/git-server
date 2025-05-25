@@ -14,8 +14,6 @@ RUN echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
 
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd", "-D"]
-
 FROM openssh-server AS git-server
 
 RUN apt-get update && \
@@ -37,12 +35,12 @@ RUN mkdir /home/git/public-keys && \
 
 COPY public-keys/*.pub /home/git/public-keys
 
-COPY bin/copy-public-keys.sh /usr/local/bin/copy-public-keys.sh
+COPY bin/* /usr/local/bin
 
 RUN chmod +x /usr/local/bin/copy-public-keys.sh && \
-    /usr/local/bin/copy-public-keys.sh && \
-    rm /usr/local/bin/copy-public-keys.sh && \
-    rm -rf /home/git/public-keys
+    chmod +x /usr/local/bin/entrypoint.sh
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
