@@ -1,6 +1,9 @@
 services:
   git-server:
-    build: .
+    build:
+      context: .
+      args:
+        - GIT_USER_UID=${GIT_USER_UID}
     volumes:
       - ./repositories:/r
     ports:

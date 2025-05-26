@@ -1,5 +1,7 @@
 FROM debian:latest AS openssh-server
 
+ARG GIT_USER_UID=1000
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -16,10 +18,9 @@ EXPOSE 22
 
 FROM openssh-server AS git-server
 
-RUN apt-get update && \
-    apt-get install -y git
+RUN apt-get install -y git
 
-RUN adduser --disabled-password --gecos "" git && \
+RUN adduser --disabled-password --gecos "" git --uid $GIT_USER_UID && \
     echo "$(which git-shell)" >> /etc/shells && \
     chsh git -s $(which git-shell) 
 
