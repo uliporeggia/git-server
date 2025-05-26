@@ -11,7 +11,7 @@ for file in "$home"/public-keys/*; do
             echo "Adicionado nova chave pública: $file"
             cat tmp.pub >> "$home"/.ssh/authorized_keys
         else
-            echo "Nenhuma nova chave precisa ser adicionada."
+            echo "$file já está autorizada."
         fi
 
         rm tmp.pub
