@@ -3,13 +3,14 @@ services:
     build:
       context: .
       args:
-        - GIT_USER_UID=${GIT_USER_UID}
+        - GIT_USER_UID=${GIT_USER_UID:-1000}
     volumes:
       - ./repositories:/r
     ports:
       - "2222:22"
     networks:
       - host
+    restart: unless-stopped
 
 networks:
   host:
