@@ -53,14 +53,16 @@ RUN if [ ! -f /usr/bin/git-shell ]; then \
 # Add 'git' user without password (-D), with specific UID (-u) and set git-shell as 
 # his shell (-s)
 # The 'shadow' package installed in previous stage provides the adduser command
-RUN adduser -D -u $GIT_USER_UID -s /usr/bin/git-shell git
+RUN adduser -D -u $GIT_USER_UID -s /usr/bin/git-shell git && \
+    # Unlock the git account by setting an invalid password hash (!)
+    sed -i 's/git:!/git:*/' /etc/shadow
 
 # Create .ssh directory for git user, set permissions and create authorized_keys file
 RUN mkdir /home/git/.ssh && \
-    chown -R git:git /home/git/.ssh && \
     chmod 700 /home/git/.ssh && \
     touch /home/git/.ssh/authorized_keys && \
-    chmod 600 /home/git/.ssh/authorized_keys
+    chmod 600 /home/git/.ssh/authorized_keys && \
+    chown -R git:git /home/git/.ssh
 
 # Create a directory for Git repositories
 RUN mkdir /r && \
