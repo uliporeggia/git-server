@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
+# Copy public keys to authorized_keys file
 /usr/local/bin/copy-public-keys.sh
 
-exec /usr/sbin/sshd -D
+# Execute the command passed from CMD
+exec "$@"

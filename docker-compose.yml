@@ -3,14 +3,11 @@ services:
     build:
       context: .
       args:
-        - GIT_USER_UID=${GIT_USER_UID:-1000}
-    volumes:
-      - ./repositories:/r
+      - GIT_USER_UID=${GIT_USER_UID:-1000}
+    container_name: git-server
     ports:
       - "2222:22"
-    networks:
-      - host
+    volumes:
+      - ./public-keys:/home/git/public-keys:ro
+      - ./repositories:/r
     restart: unless-stopped
-
-networks:
-  host:
